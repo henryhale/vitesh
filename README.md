@@ -10,7 +10,7 @@
 
 ## What is `vitesh`?
 
-`vitesh` comes from [Vite](https://en.wiktionary.org/wiki/vite), a French word for "quick" and [sh](https://en.wikipedia.org/wiki/Unix_shell), (or shell) a program that executes other programs in response to text commands.
+`vitesh` comes from [vite](https://en.wiktionary.org/wiki/vite), a French word for "quick" and [sh](https://en.wikipedia.org/wiki/Unix_shell), (or shell) a program that executes other programs in response to text commands.
 
 `vitesh` is lightweight shell implementation written in TypeScript that tends to work just a like [bash](https://www.gnu.org/software/bash/). It is intended for use with [xterminal](https://github.com/henryhale/xterminal) but can as well be used elsewhere.
 
