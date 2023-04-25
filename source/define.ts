@@ -3,7 +3,7 @@ import { IEnv } from "./types";
 const defaultEnv: IEnv = {
     username: "user",
     hostname: window?.location?.hostname ?? "web",
-    ps1: "> "
+    ps1: "$ "
 };
 
 export function defineEnv(env: IEnv = {}): IEnv {
