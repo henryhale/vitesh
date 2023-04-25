@@ -70,34 +70,22 @@ export default function addDefaultCommands(s: IShellState): void {
         desc: "Display information about commands",
         usage: "help [name]",
         action({ argv, stdout }) {
+            const cmds: string[] = [];
             if (!argv.length) {
                 stdout.write(
-                    "XShell, version __VERSION__\nType `help` to see this list."
+                    "vitesh: v__VERSION__\nType `help` to see this list."
                 );
                 stdout.write(
                     "\nType `help name` to find out more about the command `name`.\n"
                 );
-                const n = s.bin.size + (s.bin.size % 2);
-                const arr = Array.from(s.bin.keys()).sort();
-                const longest = Array.from(s.bin.values()).reduce((n, v) => {
-                    if (v.usage.length > n) {
-                        n = v.usage.length;
-                    }
-                    return n;
-                }, 0);
-                for (let i = 0; i < n / 2; i++) {
-                    if (arr[i]) {
-                        stdout.write(
-                            "\n" +
-                                s.bin.get(arr[i])?.usage?.padEnd(longest, " ")
-                        );
-                    }
-                    if (arr[i + n / 2]) {
-                        stdout.write("\t" + s.bin.get(arr[i + n / 2])?.usage);
-                    }
-                }
-                stdout.write("\n");
+                Array.from(s.bin.keys()).forEach((k) => cmds.push(k));
+            } else {
+                if (argv[0]) cmds.push(argv[0]);
             }
+            cmds.forEach((c) => {
+                stdout.write("\n" + s.bin.get(c)?.usage);
+            });
+            stdout.write("\n");
         }
     });
 }
