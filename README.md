@@ -25,17 +25,94 @@
 
 > `vitesh` provides a shell interface that allows you to add custom commands and also execute them programmatically.
 
-## Getting Started
+## Installation
 
-Install the module via [NPM](https://npmjs.org/package/vitesh). Run the following command to add  as a dependency.
+Install the module via [npm](https://npmjs.org/package/vitesh). Run the following command to add as a dependency.
 
 ```sh
 npm install vitesh
 ```
 
+### Alternative Installation
+
+You can install `vitesh` using any CDN that delivers packages from npm registry, for example: [unpkg](https://unpkg.com/vitesh/), [jsdelivr](https://cdn.jsdelivr.net/npm/vitesh/)
+
+Using [unpkg](https://unpkg.com/vitesh/):
+
+```html
+<script type="text/javascript" src="https://unpkg.com/vitesh/dist/vitesh.js"></script>
+```
+
+Using [jsDelivr](https://cdn.jsdelivr.net/npm/vitesh/):
+
+```html
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vitesh/dist/vitesh.js"></script>
+```
+
 ## API
 
-The full API for `vitesh` is contained within the TypeScript [declaration file](https://github.com/henryhale/vitesh/blob/master/types/vitesh.d.ts).
+The full public API for `vitesh` is contained within the TypeScript [declaration file](https://github.com/henryhale/vitesh/blob/master/types/vitesh.d.ts). It helps you understand the different interfaces required to setup your shell.
+
+## Usage
+
+To use `vitesh`, you need a terminal interface for inputting and outputting text.
+[XTerminal](https://github.com/henryhale/xterminal) provides that interface, learn how to install `xterminal` [here](https://github.com/henryhale/xterminal#readme).
+
+```html
+<div id="app"></div>
+```
+
+```js
+const term = new Terminal();
+const shell = new Shell(term);
+
+// connect the terminal input to the shell for execution
+term.on('data', async input => {
+    await shell.execute(input);
+});
+```
+
+### Custom commands
+
+You can add custom commands like `hello`:
+
+```js
+...
+
+shell.addCommand('hello', {
+    desc: 'A command that greets the user',
+    usage: 'hello [...name]',
+    action(process) {
+        const { argv, stdout } = process;
+        if (argv.length) {
+            stdout.write(`Hello ${argv.join(' ')}.\nIt is your time to shine.\n`);
+        } else {
+            stdout.write(`Opps!! I forgot your name.`);
+        }
+    }
+});
+```
+
+### Command execution
+
+You can also programmatically execute the commands;
+
+```js
+...
+
+(async () => {
+    await shell.execute('help');
+});
+```
+
+### Command Chaining
+
+Sometimes we need to run commands basing on the success or failure of the previously executed command or just normally.
+For example;
+
+- `echo "1" && echo "2"` : If the first command (`echo 1`) is succesfully, then `echo 2` will be executed.
+- `echo "1" || echo "2"` : The second command (`echo 2`) will not be executed if the first was succesfull.
+- `echo "1" ; echo "2"` : Both commands are executed irrespective of the success of the previously executed command.
 
 ## Browser Support
 
