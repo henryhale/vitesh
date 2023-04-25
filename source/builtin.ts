@@ -73,7 +73,7 @@ export default function addDefaultCommands(s: IShellState): void {
             const cmds: string[] = [];
             if (!argv.length) {
                 stdout.write(
-                    "vitesh: v__VERSION__\nType `help` to see this list."
+                    "vitesh: version __VERSION__ \nType `help` to see this list."
                 );
                 stdout.write(
                     "\nType `help name` to find out more about the command `name`.\n"
