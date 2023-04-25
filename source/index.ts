@@ -13,6 +13,13 @@ function $(sh: IShell, callback: (s: IShellState) => void) {
     }
 }
 
+function terminalPrompt(s: IShellState) {
+    s.term.write(
+        `\n[${s.process.env.username}@${s.process.env.hostname}] ${s.process.env.ps1} `
+    );
+    s.term.prompt();
+}
+
 export default class Shell implements IShell {
     constructor(term: ITerminal, env: IEnv = {}) {
         instances.set(this, {
@@ -28,7 +35,10 @@ export default class Shell implements IShell {
                 stdout: { write: term.write.bind(term) }
             }
         });
-        $(this, (s) => addDefaultCommands(s));
+        $(this, (s) => {
+            addDefaultCommands(s);
+            terminalPrompt(s);
+        });
     }
     addCommand(name: string, opt: ICommandConfig): void {
         if (
@@ -38,7 +48,7 @@ export default class Shell implements IShell {
             !opt?.desc ||
             !opt?.usage
         ) {
-            console.error("[viteshell] : addCommand arguments are invalid");
+            console.error("[vitesh] : addCommand arguments are invalid");
             return;
         }
         $(
@@ -52,9 +62,9 @@ export default class Shell implements IShell {
                 await executeInput(s, input);
             } catch (error) {
                 s.process.exitCode = 1;
-                s.term.write("viteshell: " + error);
+                s.term.write("vitesh: " + error);
             } finally {
-                $(this, (s) => s.term.write(s.process.env.ps1));
+                $(this, (s) => terminalPrompt(s));
             }
         });
     }
