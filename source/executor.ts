@@ -17,6 +17,7 @@ export default async function executeInput(
     str = ""
 ): Promise<void> {
     s.history.push(str);
+    s.term.writeln(str);
     parsed = parseInput(str);
     if (parsed.error) throw new Error(parsed.error);
     cgen = parseCommand(parsed.argv);
