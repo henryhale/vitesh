@@ -83,7 +83,7 @@ export default function addDefaultCommands(s: IShellState): void {
             } else {
                 const c = s.bin.get(argv[0]);
                 if (c) {
-                    stdout.write("\n" + argv[0] + "\n" + c.usage + "\n" + c.desc);
+                    stdout.write("\n" + c.usage + "\n" + c.desc);
                 }
             }
             stdout.write("\n");
