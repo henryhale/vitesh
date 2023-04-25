@@ -70,7 +70,6 @@ export default function addDefaultCommands(s: IShellState): void {
         desc: "Display information about commands",
         usage: "help [name]",
         action({ argv, stdout }) {
-            const cmds: string[] = [];
             if (!argv.length) {
                 stdout.write(
                     "vitesh: version __VERSION__ \nType `help` to see this list."
@@ -78,13 +77,15 @@ export default function addDefaultCommands(s: IShellState): void {
                 stdout.write(
                     "\nType `help name` to find out more about the command `name`.\n"
                 );
-                Array.from(s.bin.keys()).forEach((k) => cmds.push(k));
+                Array.from(s.bin.keys()).forEach((c) => {
+                    stdout.write("\n" + s.bin.get(c)?.usage);
+                });
             } else {
-                if (argv[0]) cmds.push(argv[0]);
+                const c = s.bin.get(argv[0]);
+                if (c) {
+                    stdout.write("\n" + argv[0] + "\n" + c.usage + "\n" + c.desc);
+                }
             }
-            cmds.forEach((c) => {
-                stdout.write("\n" + s.bin.get(c)?.usage);
-            });
             stdout.write("\n");
         }
     });
