@@ -1,6 +1,6 @@
 {
   "name": "vitesh",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A minimal shell implementation for the web",
   "main": "./dist/vitesh.js",
   "module": "./dist/vitesh.js",
