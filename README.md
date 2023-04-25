@@ -33,6 +33,12 @@ Install the module via [npm](https://npmjs.org/package/vitesh). Run the followin
 npm install vitesh
 ```
 
+Then import the package:
+
+```js
+import XTerminal from 'xterminal'
+```
+
 ### Alternative Installation
 
 You can install `vitesh` using any CDN that delivers packages from npm registry, for example: [unpkg](https://unpkg.com/vitesh/), [jsdelivr](https://cdn.jsdelivr.net/npm/vitesh/)
@@ -63,12 +69,13 @@ To use `vitesh`, you need a terminal interface for inputting and outputting text
 ```
 
 ```js
-const term = new Terminal();
-const shell = new Shell(term);
+const term = new XTerminal();
+term.mount('#app');
 
-// connect the terminal input to the shell for execution
-term.on('data', async input => {
-    await shell.execute(input);
+const shell = new Shell(term, {
+    username: 'root',
+    hostname: 'web',
+    ps1: '$ '
 });
 ```
 
