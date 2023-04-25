@@ -54,7 +54,7 @@ declare module "vitesh" {
     /**
      * Shell interface
      */
-    export default class Shell {
+    export default interface Shell {
         execute(input: string): Promise<void>;
         addCommand(name: string, opt: ICommandConfig): void;
     }
