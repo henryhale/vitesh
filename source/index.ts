@@ -15,7 +15,7 @@ function $(sh: IShell, callback: (s: IShellState) => void) {
 
 function terminalPrompt(s: IShellState) {
     s.term.write(
-        `[${s.process.env.username}@${s.process.env.hostname}] ${s.process.env.ps1} `
+        `\n[${s.process.env.username}@${s.process.env.hostname}] ${s.process.env.ps1} `
     );
     s.term.prompt();
 }
