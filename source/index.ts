@@ -1,6 +1,7 @@
 import addDefaultCommands from "./builtin";
 import { defineEnv } from "./define";
-import executeInput, { EXIT_SUCCESS } from "./executor";
+import executeInput, { EXIT_FAILURE, EXIT_SUCCESS } from "./executor";
+import { mustache } from "./helpers";
 import { ICommandConfig, IEnv, IShell, IShellState, ITerminal } from "./types";
 
 const instances = new WeakMap<IShell, IShellState>();
@@ -35,12 +36,16 @@ export default class Shell implements IShell {
                 stdout: { write: term.write.bind(term) }
             }
         });
+        $(this, (s) => addDefaultCommands(s));
+    }
+    public init(greeting = ""): void {
         $(this, (s) => {
-            addDefaultCommands(s);
+            if (greeting) s.term.write(greeting);
             terminalPrompt(s);
         });
     }
-    addCommand(name: string, opt: ICommandConfig): void {
+    public addCommand(name: string, opt: ICommandConfig): boolean {
+        let status = false;
         if (
             !name ||
             typeof opt !== "object" ||
@@ -49,22 +54,49 @@ export default class Shell implements IShell {
             !opt?.usage
         ) {
             console.error("[vitesh] : addCommand arguments are invalid");
-            return;
+        } else {
+            $(this, (s) => {
+                if (!s.bin.has(name)) {
+                    s.bin.set(
+                        name,
+                        Object.assign(
+                            {
+                                desc: null,
+                                usage: null,
+                                action: null
+                            },
+                            opt
+                        )
+                    );
+                    status = true;
+                }
+            });
         }
-        $(
-            this,
-            (s) => !s.bin.has(name) && s.bin.set(name, Object.assign({}, opt))
-        );
+        return status;
     }
-    async execute(input = ""): Promise<void> {
+    public removeCommand(name: string): boolean {
+        let status = false;
+        $(this, (s) => {
+            if (s.bin.has(name)) {
+                s.bin.delete(name);
+                status = true;
+            }
+        });
+        return status;
+    }
+    public async execute(input = ""): Promise<void> {
         $(this, async (s) => {
             try {
-                await executeInput(s, input);
+                if (input) {
+                    s.term.writeln(input);
+                    s.history.push(input);
+                    await executeInput(s, input);
+                }
             } catch (error) {
-                s.process.exitCode = 1;
+                s.process.exitCode = EXIT_FAILURE;
                 s.term.write("vitesh: " + error);
             } finally {
-                $(this, (s) => terminalPrompt(s));
+                terminalPrompt(s);
             }
         });
     }

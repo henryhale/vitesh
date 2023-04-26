@@ -19,8 +19,8 @@ export type IParsedCommand = {
  *  - Based on XTerminal (https://github.com/henryhale/xterminal)
  */
 export interface ITerminal {
-    write(...data: unknown[]): void;
-    writeln(...data: unknown[]): void;
+    write(data: string): void;
+    writeln(data: string): void;
     clearHistory(): void;
     prompt(): void;
     clear(): void;
@@ -46,7 +46,7 @@ export interface IEnv extends IViewData {
  * Standard Output interface
  */
 export interface IStdOut {
-    write(...args: unknown[]): void;
+    write(data: string): void;
 }
 
 /**
@@ -89,6 +89,8 @@ export interface IShellState {
  * Shell interface
  */
 export interface IShell {
+    init(greeting: string): void;
     execute(input: string): Promise<void>;
-    addCommand(name: string, opt: ICommandConfig): void;
+    addCommand(name: string, opt: ICommandConfig): boolean;
+    removeCommand(name: string): boolean;
 }
