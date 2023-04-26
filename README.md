@@ -1,6 +1,6 @@
 <div align="center">
 <h1>vitesh</h1>
-<p>A minimal shell implementation for the web</p>
+<p>A minimal shell implementation for xterminal</p>
 <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/henryhale/vitesh/npm-publish.yml">
 <img alt="npm" src="https://img.shields.io/npm/v/vitesh">
 <img alt="GitHub release (latest SemVer)" src="https://img.shields.io/github/v/release/henryhale/vitesh">

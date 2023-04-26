@@ -1,7 +1,7 @@
 {
   "name": "vitesh",
   "version": "1.1.0",
-  "description": "A minimal shell implementation for the web",
+  "description": "A minimal shell implementation for xterminal",
   "main": "./dist/vitesh.js",
   "module": "./dist/vitesh.js",
   "browser": "./dist/vitesh.js",
