@@ -1,4 +1,4 @@
-import { ICommandAction, IProcess } from "./types";
+import { ICommandAction, IProcess, IViewData } from "./types";
 
 export function promisify(
     fn: ICommandAction | undefined
@@ -21,4 +21,17 @@ export function promisify(
             );
         }
     };
+}
+
+export function mustache<T extends IViewData>(
+    template: string,
+    data: T
+): string {
+    return template.replace(/{{(.*?)}}/g, (match) => {
+        const key = match.split(/{{|}}/).filter(Boolean)[0]?.trim();
+        if (Object.prototype.hasOwnProperty.call(data, key)) {
+            return data[key] as string;
+        }
+        return match;
+    });
 }
