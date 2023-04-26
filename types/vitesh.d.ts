@@ -17,13 +17,14 @@ declare module "vitesh" {
         username?: string;
         hostname?: string;
         ps1?: string;
+        [key: string]: string | undefined;
     }
 
     /**
      * Standard Output interface
      */
     export interface IStdOut {
-        write(...args: unknown[]): void;
+        write(data: string): void;
     }
 
     /**
@@ -55,7 +56,9 @@ declare module "vitesh" {
      * Shell interface
      */
     export default interface Shell {
+        init(greeting: string): void;
         execute(input: string): Promise<void>;
-        addCommand(name: string, opt: ICommandConfig): void;
+        addCommand(name: string, opt: ICommandConfig): boolean;
+        removeCommand(name: string): boolean;
     }
 }
