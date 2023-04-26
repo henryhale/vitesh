@@ -36,7 +36,7 @@ npm install vitesh
 Then import the package:
 
 ```js
-import XTerminal from 'xterminal'
+import Shell from 'vitesh'
 ```
 
 ### Alternative Installation
