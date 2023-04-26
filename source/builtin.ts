@@ -41,26 +41,24 @@ export default function addDefaultCommands(s: IShellState): void {
             if (argv.length) {
                 argv.forEach((v) => stdout.write(v));
             }
-            stdout.write("\n");
         }
     });
 
     // history
     s.bin.set("history", {
         desc: "Display or manipulate the history list.",
-        usage: "history [-c] [-n]",
+        usage: "history [-c|--clear] [-s|--size]",
         action({ argv, stdout }) {
-            if (argv.includes("-c")) {
+            if (argv.includes("-c") || argv.includes("--clear")) {
                 s.term.clearHistory();
                 s.history.splice(0);
-                stdout.write("History was cleared.\n");
-            } else if (argv.includes("-n")) {
-                stdout.write("History: " + s.history.length + " entries.\n");
+                stdout.write("History was cleared.");
+            } else if (argv.includes("-s") || argv.includes("--size")) {
+                stdout.write("History: " + s.history.length + " entries.");
             } else {
                 s.history.forEach((v, i) => {
-                    stdout.write("\n" + (i + 1) + "\t" + v);
+                    stdout.write("\n  " + (i + 1) + "\t" + v);
                 });
-                stdout.write("\n");
             }
         }
     });
