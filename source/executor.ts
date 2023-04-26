@@ -16,8 +16,6 @@ export default async function executeInput(
     s: IShellState,
     str = ""
 ): Promise<void> {
-    s.history.push(str);
-    s.term.writeln(str);
     parsed = parseInput(str);
     if (parsed.error) throw new Error(parsed.error);
     cgen = parseCommand(parsed.argv);
@@ -40,7 +38,7 @@ export default async function executeInput(
             break;
         }
         if (tkn && new RegExp(`^[\\${delimiters[0]}]$`).test(tkn)) {
-            if (s.process.exitCode === EXIT_FAILURE) break;
+            if (s.process.exitCode >= EXIT_FAILURE) break;
         }
         if (tkn && new RegExp(`^[\\${delimiters[1]}]$`).test(tkn)) {
             if (s.process.exitCode === EXIT_SUCCESS) break;
@@ -48,10 +46,15 @@ export default async function executeInput(
         await promisify(s.bin.get(result.value.cmd)?.action)
             .call(undefined, Object.assign({}, s.process, result.value))
             .then((code: unknown) => {
-                s.process.exitCode = code ? 1 : 0;
                 tkn = null;
+                if (typeof code === "number") {
+                    s.process.exitCode = code;
+                }
             })
-            .catch((err) => (parsed.error = err));
+            .catch((err) => {
+                parsed.error = err;
+                s.process.exitCode = EXIT_FAILURE;
+            });
         if (parsed.error) break;
     }
     if (parsed.error) throw new Error(parsed.error);
