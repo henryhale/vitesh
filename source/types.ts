@@ -27,9 +27,16 @@ export interface ITerminal {
 }
 
 /**
+ * Mustache view data
+ */
+export interface IViewData {
+    [key: string]: string | undefined;
+}
+
+/**
  * Environment object
  */
-export interface IEnv {
+export interface IEnv extends IViewData {
     username?: string;
     hostname?: string;
     ps1?: string;
