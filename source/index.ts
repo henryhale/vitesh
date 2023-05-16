@@ -88,7 +88,6 @@ export default class Shell implements IShell {
         $(this, async (s) => {
             try {
                 if (input) {
-                    s.term.writeln(input);
                     s.history.push(input);
                     await executeInput(s, input);
                 }
