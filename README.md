@@ -1,4 +1,10 @@
 <div align="center">
+<br/>
+
+>_⚠️ NOTICE ⚠️ <br/> This library is not maintained anymore.<br/>
+>Kindly checkout its spiritual successor: [viteshell](https://github.com/henryhale/viteshell)_
+
+<br/>
 <h1>vitesh</h1>
 <p>A minimal shell implementation for xterminal</p>
 <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/henryhale/vitesh/npm-publish.yml">
